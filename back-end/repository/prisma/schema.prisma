@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int          @id @default(autoincrement())
+  username     String
+  email        String       @unique
+  password     String
+  role         String
+  creationDate DateTime     @default(now())
+  TypingTests  TypingTest[]
+  games        Game[]
+}
+
+model Game {
+  id          Int          @id @default(autoincrement())
+  startDate   DateTime
+  endDate     DateTime
+  typingTests TypingTest[]
+  users       User[]
+}
+
+model TypingTest {
+  id            Int          @id @default(autoincrement())
+  wpm           Float
+  accuracy      Float
+  time          Int
+  type          String
+  user          User         @relation(fields: [userId], references: [id])
+  userId        Int
+  game          Game?        @relation(fields: [gameId], references: [id])
+  gameId        Int?
+  leaderboard   Leaderboard? @relation(fields: [leaderboardId], references: [id], name: "LeaderboardScores")
+  leaderboardId Int?
+}
+
+model Leaderboard {
+  id        Int          @id @default(autoincrement())
+  maxScores Int
+  type      Int
+  scores    TypingTest[] @relation("LeaderboardScores")
+}
