@@ -1,4 +1,5 @@
 import { User as UserPrisma } from '@prisma/client';
+import {Role} from "../types";
 
 export class User {
     readonly id?: number;
@@ -6,7 +7,7 @@ export class User {
     readonly email: string;
     readonly password: string;
     readonly creationDate: Date;
-    readonly role: string;
+    readonly role: Role;
 
     constructor(user: {
         id?: number;
@@ -14,7 +15,7 @@ export class User {
         email: string;
         password: string;
         creationDate: Date;
-        role: string;
+        role: Role;
     }) {
         this.validate(user);
 
@@ -46,7 +47,7 @@ export class User {
         return this.creationDate;
     }
 
-    getRole(): string {
+    getRole(): Role {
         return this.role;
     }
 
@@ -55,7 +56,7 @@ export class User {
         email: string;
         password: string;
         creationDate: Date;
-        role: string;
+        role: Role;
     }) {
         if (!user.username?.trim()) {
             throw new Error('Username is required');
@@ -114,7 +115,7 @@ export class User {
             email,
             password,
             creationDate,
-            role,
+            role: role as Role,
         });
     }
 }
