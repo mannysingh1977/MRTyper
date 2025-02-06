@@ -3,6 +3,10 @@ dotenv.config();
 import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import * as bodyParser from 'body-parser';
+import { userRouter } from './controller/user.routes';
+import { typingtestRouter } from './controller/typingtest.routes';
+import { leaderboardRouter } from './controller/leaderboard.routes';
+import { gameRouter } from './controller/game.routes';
 import { expressjwt } from 'express-jwt';
 import helmet from 'helmet';
 
@@ -29,6 +33,11 @@ app.use(
         path: ['/users/login', '/users/signup', '/status'],
     })
 );
+
+app.use('/users', userRouter);
+app.use('/typingtests', typingtestRouter);
+app.use('/leaderboards', leaderboardRouter);
+app.use('/games', gameRouter);
 
 app.get('/status', (req, res) => {
     res.json({ message: 'Back-end is running...' });

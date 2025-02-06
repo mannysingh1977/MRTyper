@@ -31,6 +31,10 @@ const getUserByUsername = async ({ username }: { username: string }): Promise<Us
 };
 
 const authenticate = async ({ username, password }: UserInput): Promise<AuthenticationResponse> => {
+    if (!username || !password) {
+        throw new Error('Username and password are required.');
+    }
+
     const user = await userDB.getUserByUsername({ username });
 
     if (!user) {
@@ -57,6 +61,10 @@ const createUser = async ({
       creationDate,
       role,
   }: UserInput): Promise<User> => {
+    if (!username || !password || !email || !creationDate || !role) {
+        throw new Error('Username, password, email, creationDate and role are required.');
+    }
+
     const existing = await userDB.getUserByUsername({ username });
     const existingEmail = await userDB.getUserByEmail({ email });
 
